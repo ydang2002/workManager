@@ -10,6 +10,8 @@ Future<Album> createAlbum(String title) async {
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
+    //jsonEncode giúp bạn biến đổi cấu trúc dữ liệu Dart thành một chuỗi JSON
+    // hợp lệ để có thể được gửi đi thông qua request.
     body: jsonEncode(<String, String>{
       'title': title,
     }),
@@ -29,9 +31,10 @@ Future<Album> createAlbum(String title) async {
 class Album {
   final int id;
   final String title;
-
+//constructor và một factory constructor để tạo đối tượng Album từ dữ liệu JSON.
   const Album({required this.id, required this.title});
-
+//Factory constructor này được sử dụng để tạo một đối tượng Album từ một đối tượng JSON (Map<String, dynamic>).
+// Trong trường hợp này, nó thực hiện việc chuyển đổi dữ liệu từ dạng JSON sang đối tượng Dart.
   factory Album.fromJson(Map<String, dynamic> json) {
     return Album(
       id: json['id'],
@@ -54,9 +57,10 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final TextEditingController _controller = TextEditingController();
-  Future<Album>? _futureAlbum;
-
+  final TextEditingController _controller = TextEditingController();//TextEditingController để quản lý dữ liệu đầu vào từ TextField.
+  Future<Album>? _futureAlbum;//_futureAlbum để theo dõi kết quả của việc tạo mới album.
+//buildColumn được gọi khi _futureAlbum là null (khi chưa có album nào được tạo mới),
+// ngược lại sẽ gọi buildFutureBuilder.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -76,7 +80,7 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
-
+//Khi nút được nhấn, _futureAlbum sẽ được cập nhật và gọi lại build để cập nhật giao diện.
   Column buildColumn() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -96,7 +100,8 @@ class _MyAppState extends State<MyApp> {
       ],
     );
   }
-
+//Nếu có dữ liệu, hiển thị tiêu đề của album. Nếu có lỗi, hiển thị thông báo lỗi.
+// Nếu đang chờ, hiển thị một CircularProgressIndicator.
   FutureBuilder<Album> buildFutureBuilder() {
     return FutureBuilder<Album>(
       future: _futureAlbum,
@@ -112,3 +117,5 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+//_futureAlbum là một biến kiểu Future<Album> được cập nhật khi một album mới được tạo và dữ liệu được đọc từ server.
+//snapshot: Một đối tượng AsyncSnapshot<T> chứa thông tin về trạng thái của Future.

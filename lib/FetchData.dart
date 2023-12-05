@@ -9,8 +9,7 @@ Future<Album> fetchAlbum() async {
       .get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
 
   if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
+    // Nếu server trả về response 200 OK thì parse JSON
     return Album.fromJson(jsonDecode(response.body));
   } else {
     // If the server did not return a 200 OK response,
